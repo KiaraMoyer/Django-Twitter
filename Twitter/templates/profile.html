@@ -23,6 +23,10 @@
   <!-- Sidebar -->
   <div class="col-3">
     <h3> Add tweet </h3>
+    {% if form.errors %}
+      {% for field in form %}
+        {% for error in form.errors %}
+          <div class="alert alert-danger">
   </div>
 </div>
 {% endblock  %}
