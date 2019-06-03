@@ -7,16 +7,16 @@
     <h3>@{{ user.username }}</h3>
 
     {% if user.tweets.all %}
-      {% for tweet in user.tweets.all %}
-      <div class="card" style="margin-bottom: 20px;">
-        <div class="card-body">
-          <h5 class="card-title">@{{ tweet.user.username }}</h5>
-          <p class="card-text"><b>{{ tweet.created_at }}</b> - {{ tweet.body }}</p>
-        </div>
+    {% for tweet in user.tweets.all %}
+    <div class="card" style="margin-bottom: 20px;">
+      <div class="card-body">
+        <h5 class="card-title">@{{ tweet.user.username }}</h5>
+        <p class="card-text"><b>{{ tweet.created_at }}</b> - {{ tweet.body }}</p>
       </div>
-      {% endfor %}
+    </div>
+    {% endfor %}
     {% else %}
-      <p>No tweets yet!</p>
+    <p>No tweets yet!</p>
     {% endif %}
   </div>
 
@@ -27,6 +27,28 @@
       {% for field in form %}
         {% for error in form.errors %}
           <div class="alert alert-danger">
+            <b>{{ error|escape }}</b>
+          </div>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        <div class="form-group">
+          {{ field }}
+        </div>
+      {% endfor %}
+    {% endif %}
+    <form action="/{{ request.user.username }}/" method="post">
+      {% csrf_token %}
+
+      {% for field in form %}
+        <div class="form-group">
+          {{ field }}
+        </div>
+      {% endfor %}
+
+      <input type="hidden" value="{{ request.path }}" name="redirect">
+      <input type="submit" value="Post Tweet" class="btn btn-primary">
+    </form>
   </div>
 </div>
 {% endblock  %}
